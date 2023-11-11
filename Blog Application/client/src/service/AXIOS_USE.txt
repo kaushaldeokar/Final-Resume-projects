@@ -1,0 +1,52 @@
+Axios is a simple Promise-based HTTP client for the browser and Node. 
+It provides an easy-to-use library with a small footprint.
+
+If we perform a regular require with Axios,
+we will receive the default instance.
+But what if we wanted to add a custom config, like a timeout of one second, header('Content-Type: application/json');
+that is not easily possible with const axios = require('axios')?
+
+This is where Axios.create shines as compared to the usual “require” of Axios,
+even though both return an instance of Axios. With axios.create, we can set up a config like baseUrl, 
+and all the calls made will simply require the URI for the HTTP calls, without the full URL.
+
+
+
+Axios interceptors are a powerful tool for making changes to requests and responses in a non-intrusive way where the code stays in a single place. 
+They provide a way to modify and control the requests and responses that are sent and received by the application.
+
+In this guide, you have seen how interceptors can be used to add headers, modify requests, intercept responses, and log response times.
+
+Axios interceptors are like pre-request and post-response received hooks you can inject into your requests and responses.
+If you need to remove an interceptor later you can.
+
+const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
+axios.interceptors.request.eject(myInterceptor);
+You can add interceptors to a custom instance of axios.
+
+const instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+
+ou can intercept requests or responses before they are handled by then or catch.
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    return config;
+  }, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  });
+
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  });
+
+  link https://daily.dev/blog/a-guide-to-writing-clean-api-calls-using-axios
